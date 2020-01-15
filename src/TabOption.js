@@ -1,18 +1,14 @@
 /* @flow */
 
-import React, { PureComponent } from 'react'
-import {
-  View,
-  TouchableOpacity,
-  StyleSheet,
-  Text,
-} from 'react-native'
+import React, { PureComponent } from "react";
+import { View, StyleSheet, Text } from "react-native";
 
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import type {
   ViewStyleProp,
-  TextStyleProp,
-} from 'react-native/Libraries/StyleSheet/StyleSheet'
+  TextStyleProp
+} from "react-native/Libraries/StyleSheet/StyleSheet";
 
 type Props = {
   isTabActive?: boolean,
@@ -35,54 +31,58 @@ type Props = {
   accessible?: boolean,
   activeTabOpacity?: number,
   accessibilityLabel?: string,
-  enabled?: boolean,
-}
+  enabled?: boolean
+};
 
 const styles = StyleSheet.create({
   tabStyle: {
     paddingVertical: 5,
     flex: 1,
-    justifyContent: 'center',
-    alignItems: 'center',
-    borderColor: '#0076FF',
+    justifyContent: "center",
+    alignItems: "center",
+    borderColor: "#0076FF",
     borderWidth: 1,
-    backgroundColor: 'white',
+    backgroundColor: "white"
+  },
+  clickableTabStyle: {
+    minWidth: 70,
+    alignItems: "center"
   },
   activeTabStyle: {
-    backgroundColor: '#0076FF',
+    backgroundColor: "#0076FF"
   },
   tabTextStyle: {
-    color: '#0076FF',
+    color: "#0076FF"
   },
   activeTabTextStyle: {
-    color: 'white',
+    color: "white"
   },
   tabBadgeContainerStyle: {
     borderRadius: 20,
-    backgroundColor: 'red',
+    backgroundColor: "red",
     paddingLeft: 5,
     paddingRight: 5,
     marginLeft: 5,
-    marginBottom: 3,
+    marginBottom: 3
   },
   activeTabBadgeContainerStyle: {
-    backgroundColor: 'white',
+    backgroundColor: "white"
   },
   tabBadgeStyle: {
-    color: 'white',
+    color: "white",
     fontSize: 11,
-    fontWeight: 'bold',
+    fontWeight: "bold"
   },
   activeTabBadgeStyle: {
-    color: 'black',
-  },
-})
+    color: "black"
+  }
+});
 
 export default class TabOption extends PureComponent<Props> {
   static defaultProps = {
     isTabActive: false,
     index: 0,
-    badge: '',
+    badge: "",
     firstTabStyle: {},
     lastTabStyle: {},
     tabStyle: {},
@@ -97,9 +97,9 @@ export default class TabOption extends PureComponent<Props> {
     allowFontScaling: false,
     accessible: true,
     activeTabOpacity: 1,
-    accessibilityLabel: '',
+    accessibilityLabel: "",
     enabled: false,
-    onTabPress: () => {},
+    onTabPress: () => {}
   };
 
   render() {
@@ -124,69 +124,73 @@ export default class TabOption extends PureComponent<Props> {
       accessible,
       activeTabOpacity,
       accessibilityLabel,
-      enabled,
-    } = this.props
+      enabled
+    } = this.props;
     return (
-      <TouchableOpacity
+      <View
         style={[
           styles.tabStyle,
           tabStyle,
           isTabActive ? [styles.activeTabStyle, activeTabStyle] : {},
           firstTabStyle,
-          lastTabStyle,
+          lastTabStyle
         ]}
-        accessible={accessible}
-        accessibilityLabel={accessibilityLabel}
-        accessibilityTraits={isTabActive ? 'selected' : 'button'}
-        accessibilityComponentType="button"
-        onPress={() => onTabPress(index)}
-        disabled={!enabled}
-        activeOpacity={activeTabOpacity}
       >
-        <View style={{ flexDirection: 'row' }}>
-          <Text
-            style={[
-              styles.tabTextStyle,
-              tabTextStyle,
-              isTabActive
-                ? [styles.activeTabTextStyle, activeTabTextStyle]
-                : {},
-            ]}
-            numberOfLines={textNumberOfLines}
-            allowFontScaling={allowFontScaling}
-            ellipsizeMode="tail"
-          >
-            {text}
-          </Text>
-          {Boolean(badge) && (
-            <View
+        <TouchableOpacity
+          style={styles.clickableTabStyle}
+          accessible={accessible}
+          accessibilityLabel={accessibilityLabel}
+          accessibilityTraits={isTabActive ? "selected" : "button"}
+          accessibilityComponentType="button"
+          onPress={() => onTabPress(index)}
+          disabled={!enabled}
+          activeOpacity={activeTabOpacity}
+        >
+          <View style={{ flexDirection: "row" }}>
+            <Text
               style={[
-                styles.tabBadgeContainerStyle,
-                tabBadgeContainerStyle,
+                styles.tabTextStyle,
+                tabTextStyle,
                 isTabActive
-                  ? [
-                    styles.activeTabBadgeContainerStyle,
-                    activeTabBadgeContainerStyle,
-                  ]
-                  : {},
+                  ? [styles.activeTabTextStyle, activeTabTextStyle]
+                  : {}
               ]}
+              numberOfLines={textNumberOfLines}
+              allowFontScaling={allowFontScaling}
+              ellipsizeMode="tail"
             >
-              <Text
+              {text}
+            </Text>
+            {Boolean(badge) && (
+              <View
                 style={[
-                  styles.tabBadgeStyle,
-                  tabBadgeStyle,
+                  styles.tabBadgeContainerStyle,
+                  tabBadgeContainerStyle,
                   isTabActive
-                    ? [styles.activeTabBadgeStyle, activeTabBadgeStyle]
-                    : {},
+                    ? [
+                        styles.activeTabBadgeContainerStyle,
+                        activeTabBadgeContainerStyle
+                      ]
+                    : {}
                 ]}
-                allowFontScaling={allowFontScaling}
               >
-                {badge}
-              </Text>
-            </View>
-          )}
-        </View>
-      </TouchableOpacity>
-    )
+                <Text
+                  style={[
+                    styles.tabBadgeStyle,
+                    tabBadgeStyle,
+                    isTabActive
+                      ? [styles.activeTabBadgeStyle, activeTabBadgeStyle]
+                      : {}
+                  ]}
+                  allowFontScaling={allowFontScaling}
+                >
+                  {badge}
+                </Text>
+              </View>
+            )}
+          </View>
+        </TouchableOpacity>
+      </View>
+    );
   }
 }
