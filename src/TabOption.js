@@ -3,7 +3,7 @@
 import React, { PureComponent } from "react";
 import { View, StyleSheet, Text } from "react-native";
 
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { BaseButton } from "react-native-gesture-handler";
 
 import type {
   ViewStyleProp,
@@ -43,10 +43,6 @@ const styles = StyleSheet.create({
     borderColor: "#0076FF",
     borderWidth: 1,
     backgroundColor: "white"
-  },
-  clickableTabStyle: {
-    minWidth: 70,
-    alignItems: "center"
   },
   activeTabStyle: {
     backgroundColor: "#0076FF"
@@ -127,7 +123,7 @@ export default class TabOption extends PureComponent<Props> {
       enabled
     } = this.props;
     return (
-      <View
+      <BaseButton
         style={[
           styles.tabStyle,
           tabStyle,
@@ -135,62 +131,56 @@ export default class TabOption extends PureComponent<Props> {
           firstTabStyle,
           lastTabStyle
         ]}
+        accessible={accessible}
+        accessibilityLabel={accessibilityLabel}
+        accessibilityTraits={isTabActive ? "selected" : "button"}
+        accessibilityComponentType="button"
+        onPress={() => onTabPress(index)}
+        disabled={!enabled}
+        activeOpacity={activeTabOpacity}
       >
-        <TouchableOpacity
-          style={styles.clickableTabStyle}
-          accessible={accessible}
-          accessibilityLabel={accessibilityLabel}
-          accessibilityTraits={isTabActive ? "selected" : "button"}
-          accessibilityComponentType="button"
-          onPress={() => onTabPress(index)}
-          disabled={!enabled}
-          activeOpacity={activeTabOpacity}
-        >
-          <View style={{ flexDirection: "row" }}>
-            <Text
+        <View style={{ flexDirection: "row" }}>
+          <Text
+            style={[
+              styles.tabTextStyle,
+              tabTextStyle,
+              isTabActive ? [styles.activeTabTextStyle, activeTabTextStyle] : {}
+            ]}
+            numberOfLines={textNumberOfLines}
+            allowFontScaling={allowFontScaling}
+            ellipsizeMode="tail"
+          >
+            {text}
+          </Text>
+          {Boolean(badge) && (
+            <View
               style={[
-                styles.tabTextStyle,
-                tabTextStyle,
+                styles.tabBadgeContainerStyle,
+                tabBadgeContainerStyle,
                 isTabActive
-                  ? [styles.activeTabTextStyle, activeTabTextStyle]
+                  ? [
+                      styles.activeTabBadgeContainerStyle,
+                      activeTabBadgeContainerStyle
+                    ]
                   : {}
               ]}
-              numberOfLines={textNumberOfLines}
-              allowFontScaling={allowFontScaling}
-              ellipsizeMode="tail"
             >
-              {text}
-            </Text>
-            {Boolean(badge) && (
-              <View
+              <Text
                 style={[
-                  styles.tabBadgeContainerStyle,
-                  tabBadgeContainerStyle,
+                  styles.tabBadgeStyle,
+                  tabBadgeStyle,
                   isTabActive
-                    ? [
-                        styles.activeTabBadgeContainerStyle,
-                        activeTabBadgeContainerStyle
-                      ]
+                    ? [styles.activeTabBadgeStyle, activeTabBadgeStyle]
                     : {}
                 ]}
+                allowFontScaling={allowFontScaling}
               >
-                <Text
-                  style={[
-                    styles.tabBadgeStyle,
-                    tabBadgeStyle,
-                    isTabActive
-                      ? [styles.activeTabBadgeStyle, activeTabBadgeStyle]
-                      : {}
-                  ]}
-                  allowFontScaling={allowFontScaling}
-                >
-                  {badge}
-                </Text>
-              </View>
-            )}
-          </View>
-        </TouchableOpacity>
-      </View>
+                {badge}
+              </Text>
+            </View>
+          )}
+        </View>
+      </BaseButton>
     );
   }
 }
